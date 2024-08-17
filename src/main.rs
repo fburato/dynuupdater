@@ -124,7 +124,7 @@ fn main() -> Result<(), SelfError> {
     domain_dto.ipv4_address = ipv4;
     domain_dto.ipv6_address = ipv6;
     dynu_client.update_domain(domain_dto.id.unwrap(), &domain_dto)?;
-    let result = dynu_client.get_domain(domain_dto.id.unwrap());
+    let result = dynu_client.get_domain(domain_dto.id.unwrap())?;
     eprintln!("updated domain={:?}", &result);
     Ok(())
 }
