@@ -121,9 +121,9 @@ pub enum RecordDTO {
 }
 
 impl RecordDTO {
-    fn txt_record(node_name: &str, text_data: &str, ttl: u64) -> RecordDTO {
+    pub fn txt_record(node_name: &str, text_data: &str, ttl: u64, id: Option<u64>) -> RecordDTO {
         RecordDTO::TxtRecord {
-            id: None,
+            id: id,
             domain_id: None,
             domain_name: None,
             node_name: node_name.to_string(),
@@ -135,7 +135,7 @@ impl RecordDTO {
             text_data: text_data.to_string(),
         }
     }
-    fn id(&self) -> Option<u64> {
+    pub fn id(&self) -> Option<u64> {
         match self {
             RecordDTO::ARecord { id, .. } => id.clone(),
             RecordDTO::SoaRecord { id, .. } => id.clone(),
@@ -361,16 +361,22 @@ mod tests {
             let client = make_client();
             let before_run = client.get_records(DOMAIN_ID).unwrap();
 
-            let txt_record = RecordDTO::txt_record("test", "test-value", 120);
+            let txt_record = RecordDTO::txt_record("test", "test-value", 120, None);
             let result = client.create_record(DOMAIN_ID, &txt_record).unwrap();
 
             let after_creation = client.get_records(DOMAIN_ID).unwrap();
-            assert_eq!(before_run.dns_records.len() + 1, after_creation.dns_records.len());
+            assert_eq!(
+                before_run.dns_records.len() + 1,
+                after_creation.dns_records.len()
+            );
 
             client.delete_record(DOMAIN_ID, result).unwrap();
 
             let after_deletion = client.get_records(DOMAIN_ID).unwrap();
-            assert_eq!(before_run.dns_records.len(), after_deletion.dns_records.len())
+            assert_eq!(
+                before_run.dns_records.len(),
+                after_deletion.dns_records.len()
+            )
         }
     }
 }

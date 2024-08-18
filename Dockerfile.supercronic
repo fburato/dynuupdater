@@ -23,4 +23,3 @@ COPY --from=builder /workdir/target/release/dynuupdater /usr/bin/dynuupdater
 COPY --from=supercronic /go/bin/supercronic /usr/bin/supercronic
 
 USER nobody
-
