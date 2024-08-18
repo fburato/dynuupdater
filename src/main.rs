@@ -84,7 +84,7 @@ fn or_empty(option: &Option<String>) -> String {
 fn main() -> Result<(), SelfError> {
     let arguments = MainArguments::parse();
     let api_key = get_api_key(&arguments)?;
-    let dynu_client = DynuClient::new(&api_key);
+    let dynu_client = DynuClient::new(&api_key)?;
     let ipv4 = ip(IP::V4);
     let ipv6 = ip(IP::V6);
     eprintln!(
@@ -123,7 +123,7 @@ fn main() -> Result<(), SelfError> {
     domain_dto.ipv6 = ipv6.is_some();
     domain_dto.ipv4_address = ipv4;
     domain_dto.ipv6_address = ipv6;
-    dynu_client.update_domain(domain_dto.id.unwrap(), &domain_dto)?;
+    dynu_client.update_domain(&domain_dto)?;
     let result = dynu_client.get_domain(domain_dto.id.unwrap())?;
     eprintln!("updated domain={:?}", &result);
     Ok(())
