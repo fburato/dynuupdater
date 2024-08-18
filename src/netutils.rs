@@ -25,7 +25,7 @@ pub struct Addresses {
 }
 
 pub fn public_ip_of(domain: &str) -> Result<Addresses, io::Error> {
-    let resolved = dns_lookup::lookup_host(domain)?;
+    let resolved = dns_lookup::lookup_host(domain).unwrap_or_else(|_| vec!());
     if resolved.is_empty() {
         Ok(Addresses { v4: None, v6: None })
     } else {
