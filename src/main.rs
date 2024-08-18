@@ -70,7 +70,10 @@ enum Commands {
     #[command(
         about = "Update a dynu domain using the public ip of the system running the process"
     )]
-    Refresh { domain: String },
+    Refresh {
+        #[arg(help = "Domain to update")]
+        domain: String,
+    },
 
     #[command(about = "Update or create a dynu domain TXT record with provided value")]
     #[command(name = "txt-update")]
